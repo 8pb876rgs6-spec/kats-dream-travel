@@ -126,13 +126,6 @@ export default function Home() {
                 animate={introComplete ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" }}
               >
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6">
-                  <span className="w-2 h-2 rounded-full bg-[oklch(0.75_0.1_80)] animate-pulse" />
-                  <span className="text-xs text-white/60 tracking-wider uppercase font-medium">
-                    Now booking 2025–2026
-                  </span>
-                </div>
-
                 <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-6">
                   Your dream trip{" "}
                   <span className="gradient-text">starts right here.</span>
@@ -146,6 +139,10 @@ export default function Home() {
                 <div className="flex flex-wrap gap-4">
                   <a
                     href="#booking"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" });
+                    }}
                     className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[oklch(0.62_0.19_260)] to-[oklch(0.50_0.15_260)] text-white font-semibold rounded-full shadow-xl shadow-[oklch(0.62_0.19_260/0.25)] hover:shadow-[oklch(0.62_0.19_260/0.45)] hover:scale-105 transition-all duration-300 text-base"
                   >
                     Plan My Trip
@@ -291,6 +288,10 @@ export default function Home() {
               </p>
               <a
                 href="#booking"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" });
+                }}
                 className="inline-flex items-center gap-2 px-8 py-3.5 bg-white/10 backdrop-blur-sm border border-white/20 text-white font-medium rounded-full hover:bg-white/20 hover:border-white/30 transition-all duration-300"
               >
                 Get a Free Consultation

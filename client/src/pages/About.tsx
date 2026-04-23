@@ -3,7 +3,7 @@
  * Design: Cinematic Voyager — editorial film aesthetic, luxury travel
  * Sections: Hero → Mission → Story → Values → Why Choose Us → CTA → Footer
  */
-import { Link } from "wouter";
+import { useLocation } from "wouter";
 import {
   Plane,
   Heart,
@@ -63,6 +63,8 @@ const FEATURES = [
 ];
 
 export default function About() {
+  const [, setLocation] = useLocation();
+
   return (
     <>
       <Navbar />
@@ -286,6 +288,13 @@ export default function About() {
             </p>
             <a
               href="/#booking"
+              onClick={(e) => {
+                e.preventDefault();
+                setLocation("/");
+                setTimeout(() => {
+                  document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" });
+                }, 300);
+              }}
               className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-[oklch(0.62_0.19_260)] to-[oklch(0.50_0.15_260)] text-white font-semibold rounded-full shadow-2xl shadow-[oklch(0.62_0.19_260/0.3)] hover:shadow-[oklch(0.62_0.19_260/0.5)] hover:scale-105 transition-all duration-300 text-lg"
             >
               Start Planning — It's Free

@@ -2,10 +2,38 @@
  * Footer — Consistent across all pages
  * Design: Cinematic Voyager — deep navy, elegant serif, gold accents
  */
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Plane, Mail, Phone, Ship, Train, MapPin, Palmtree, Anchor } from "lucide-react";
 
+function useHashNav() {
+  const [location, setLocation] = useLocation();
+
+  const handleHashClick = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    const id = href.slice(2); // remove "/#"
+    if (location === "/") {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      setLocation("/");
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+    }
+  };
+
+  return handleHashClick;
+}
+
 export default function Footer() {
+  const handleHashClick = useHashNav();
+
+  const exploreLinks = [
+    { label: "Services", href: "/#services" },
+    { label: "Travel Experiences", href: "/#destinations" },
+    { label: "About Kat", href: "/about" },
+    { label: "Book a Trip", href: "/#booking" },
+  ];
+
   return (
     <footer className="bg-[oklch(0.10_0.04_260)] text-white/80">
       <div className="container py-16 md:py-20">
@@ -34,19 +62,24 @@ export default function Footer() {
           <div>
             <h4 className="font-serif text-lg font-semibold text-white mb-5">Explore</h4>
             <ul className="space-y-3">
-              {[
-                { label: "Services", href: "/#services" },
-                { label: "Travel Experiences", href: "/#destinations" },
-                { label: "About Kat", href: "/about" },
-                { label: "Book a Trip", href: "/#booking" },
-              ].map((link) => (
+              {exploreLinks.map((link) => (
                 <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/50 hover:text-[oklch(0.75_0.1_80)] transition-colors duration-300"
-                  >
-                    {link.label}
-                  </Link>
+                  {link.href.startsWith("/#") ? (
+                    <a
+                      href={link.href}
+                      onClick={(e) => handleHashClick(e, link.href)}
+                      className="text-sm text-white/50 hover:text-[oklch(0.75_0.1_80)] transition-colors duration-300 cursor-pointer"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="text-sm text-white/50 hover:text-[oklch(0.75_0.1_80)] transition-colors duration-300"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
