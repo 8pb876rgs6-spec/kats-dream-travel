@@ -99,6 +99,17 @@ export default function Home() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const subject = encodeURIComponent(`Travel Inquiry from ${formData.name}`);
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\n` +
+      `Email: ${formData.email}\n` +
+      `Phone: ${formData.phone}\n` +
+      `Number of Travelers: ${formData.travelers}\n` +
+      `Dream Experience: ${formData.destination}\n` +
+      `Budget Range: ${formData.budget}\n` +
+      `Additional Details:\n${formData.message}`
+    );
+    window.open(`mailto:katsddtravel@gmail.com?subject=${subject}&body=${body}`, "_blank");
     setFormSubmitted(true);
     setTimeout(() => setFormSubmitted(false), 4000);
   };

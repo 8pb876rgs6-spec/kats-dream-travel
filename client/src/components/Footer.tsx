@@ -114,7 +114,7 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-[oklch(0.62_0.19_260)]" />
-                <span className="text-sm text-white/50">hello@katsdreamtravel.com</span>
+                <span className="text-sm text-white/50">katsddtravel@gmail.com</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-[oklch(0.62_0.19_260)]" />
