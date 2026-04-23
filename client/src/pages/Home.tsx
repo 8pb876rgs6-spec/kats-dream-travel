@@ -1,7 +1,7 @@
 /**
  * Home Page — Kat's Dream Destination Travel
- * Design: Cinematic Voyager — editorial film aesthetic, luxury travel
- * Sections: Intro → Hero → Trust Bar → Services → Destinations → Booking → Footer
+ * Design: Cinematic Voyager — editorial film aesthetic, accessible travel
+ * Sections: Intro → Hero → Trust Bar → Services → CTA → Destinations → Testimonials → Booking → Footer
  */
 import { useState, useCallback } from "react";
 import { Link } from "wouter";
@@ -20,27 +20,60 @@ import {
   CheckCircle2,
   Send,
   ChevronRight,
+  Ship,
+  Anchor,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CinematicIntro from "@/components/CinematicIntro";
 import ScrollReveal from "@/components/ScrollReveal";
 
-const HERO_SANTORINI = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477345712/dHh7MfoMqSwueh7MPSfyUG/hero-santorini-S4sRAXLfUcbkwvjm9keeGk.webp";
+/* ===== IMAGE URLS ===== */
+const HERO_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477345712/dHh7MfoMqSwueh7MPSfyUG/family-beach-vacation-EFNYR55XxwJ7Pf6TDGfuXh.webp";
 
 const DESTINATIONS = [
-  { name: "Santorini", country: "Greece", img: "/manus-storage/santorini-gallery-fix_de82ebd0.jpg", size: "large" },
-  { name: "Paris", country: "France", img: "/manus-storage/paris-gallery_40805fc0.jpg", size: "small" },
-  { name: "Bali", country: "Indonesia", img: "/manus-storage/bali-gallery_cbe8d414.jpg", size: "small" },
-  { name: "Maldives", country: "Indian Ocean", img: "/manus-storage/maldives-gallery_cd4e1901.jpg", size: "large" },
-  { name: "Cancún", country: "Mexico", img: "/manus-storage/cancun-gallery_78a3f385.jpg", size: "medium" },
+  {
+    name: "Caribbean Cruise",
+    country: "Multiple Islands",
+    img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663477345712/dHh7MfoMqSwueh7MPSfyUG/cruise-ship-B9QLiF3MEB2V9s9WbBJwFC.webp",
+    size: "large",
+    icon: Ship,
+  },
+  {
+    name: "European Rail",
+    country: "Scenic Train Journeys",
+    img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663477345712/dHh7MfoMqSwueh7MPSfyUG/scenic-train-Q9YMfw9YvaJ7noTwnZ339n.webp",
+    size: "small",
+    icon: Train,
+  },
+  {
+    name: "Coastal Road Trip",
+    country: "Pacific Coast, USA",
+    img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663477345712/dHh7MfoMqSwueh7MPSfyUG/road-trip-coast-NazgscBQdFQYuvWmvL6Knj.webp",
+    size: "small",
+    icon: MapPinned,
+  },
+  {
+    name: "Alaska Glacier Cruise",
+    country: "Alaska, USA",
+    img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663477345712/dHh7MfoMqSwueh7MPSfyUG/alaska-cruise-glacier-WEHyUEkGbtSLRG68j2doqk.webp",
+    size: "large",
+    icon: Anchor,
+  },
+  {
+    name: "Family Beach Getaway",
+    country: "Cancún, Mexico",
+    img: "/manus-storage/cancun-gallery_78a3f385.jpg",
+    size: "medium",
+    icon: Users,
+  },
 ];
 
 const SERVICES = [
   { icon: Hotel, title: "Hotels & Resorts", desc: "Curated stays at world-class properties, including exclusive Hilton partner rates." },
   { icon: Shield, title: "Travel Insurance", desc: "Comprehensive coverage for peace of mind on every journey." },
   { icon: Train, title: "Train Tickets", desc: "Scenic rail journeys across Europe, Asia, and beyond — all booked for you." },
-  { icon: MapPinned, title: "Custom Itineraries", desc: "Every trip is designed around your interests, pace, and travel style." },
+  { icon: Ship, title: "Cruise Packages", desc: "From Caribbean getaways to Alaskan adventures — we find the perfect cruise for your family." },
   { icon: Users, title: "Group & Family Travel", desc: "Coordinating trips for groups of any size with seamless logistics." },
   { icon: Headset, title: "Personal Concierge", desc: "A dedicated travel expert available before, during, and after your trip." },
 ];
@@ -48,7 +81,7 @@ const SERVICES = [
 const TRUST_ITEMS = [
   { icon: Sparkles, text: "Free Consultation" },
   { icon: Heart, text: "Personalized Itineraries" },
-  { icon: Hotel, text: "Hilton Resorts & Hotels" },
+  { icon: Ship, text: "Cruise Packages" },
   { icon: Shield, text: "Travel Insurance Included" },
   { icon: Train, text: "Train & Flight Booking" },
 ];
@@ -107,7 +140,7 @@ export default function Home() {
 
                 <p className="text-lg md:text-xl text-white/50 max-w-lg mb-10 leading-relaxed">
                   A personalized, stress-free travel experience designed around you. 
-                  From the first conversation to your last sunset — we handle everything.
+                  From cruises to train journeys to beach getaways — we handle everything.
                 </p>
 
                 <div className="flex flex-wrap gap-4">
@@ -127,24 +160,24 @@ export default function Home() {
                 </div>
               </motion.div>
 
-              {/* Right: Featured Destination Visual */}
+              {/* Right: Featured Travel Visual */}
               <motion.div
                 className="relative"
                 initial={{ opacity: 0, x: 30 }}
                 animate={introComplete ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.9, delay: 0.5, ease: "easeOut" }}
               >
-                {/* Main destination image */}
+                {/* Main image — family beach vacation */}
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/40 max-w-md mx-auto lg:max-w-none">
                   <img
-                    src={HERO_SANTORINI}
-                    alt="Santorini, Greece"
+                    src={HERO_IMAGE}
+                    alt="Happy family enjoying a beach vacation"
                     className="w-full h-[450px] md:h-[550px] object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.10_0.04_260)] via-transparent to-transparent" />
                   <div className="absolute bottom-6 left-6 right-6">
-                    <p className="text-xs text-white/50 uppercase tracking-widest mb-1">Featured Destination</p>
-                    <h3 className="font-serif text-2xl text-white font-semibold">Santorini, Greece</h3>
+                    <p className="text-xs text-white/50 uppercase tracking-widest mb-1">Featured Experience</p>
+                    <h3 className="font-serif text-2xl text-white font-semibold">Family Beach Getaway</h3>
                   </div>
                 </div>
 
@@ -156,17 +189,22 @@ export default function Home() {
                 >
                   <div className="flex items-center gap-2">
                     <div className="flex -space-x-1">
-                      {["Paris", "Bali", "Maldives", "Cancún"].map((d, i) => (
+                      {[
+                        { label: "Cruises", letter: "C" },
+                        { label: "Trains", letter: "T" },
+                        { label: "Beach", letter: "B" },
+                        { label: "Road", letter: "R" },
+                      ].map((d, i) => (
                         <div
-                          key={d}
+                          key={d.label}
                           className="w-7 h-7 rounded-full bg-gradient-to-br from-[oklch(0.62_0.19_260)] to-[oklch(0.50_0.15_260)] flex items-center justify-center text-[9px] text-white font-bold border-2 border-[oklch(0.10_0.04_260)]"
                           style={{ zIndex: 4 - i }}
                         >
-                          {d[0]}
+                          {d.letter}
                         </div>
                       ))}
                     </div>
-                    <span className="text-xs text-white/70 font-medium ml-1">Top Destinations</span>
+                    <span className="text-xs text-white/70 font-medium ml-1">Travel Experiences</span>
                   </div>
                 </motion.div>
 
@@ -213,7 +251,7 @@ export default function Home() {
                   Travel services, tailored to you
                 </h2>
                 <p className="text-[oklch(0.45_0.03_260)] mt-4 max-w-2xl mx-auto text-lg">
-                  From booking flights to crafting your perfect itinerary — every detail is handled with care.
+                  From booking cruises to crafting your perfect itinerary — every detail is handled with care.
                 </p>
               </div>
             </ScrollReveal>
@@ -249,7 +287,7 @@ export default function Home() {
                 Not sure where to go? <span className="gradient-text">We'll help you decide.</span>
               </h2>
               <p className="text-white/40 text-lg max-w-xl mx-auto mb-8">
-                Tell us what kind of experience you're looking for and we'll craft the perfect destination.
+                Whether it's a cruise, a scenic train ride, or a family beach trip — tell us your dream and we'll make it happen.
               </p>
               <a
                 href="#booking"
@@ -262,19 +300,19 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ===== DESTINATIONS GALLERY ===== */}
+        {/* ===== DESTINATIONS / EXPERIENCES GALLERY ===== */}
         <section id="destinations" className="bg-[oklch(0.10_0.04_260)] py-24 md:py-32">
           <div className="container">
             <ScrollReveal>
               <div className="text-center mb-16">
                 <span className="text-xs uppercase tracking-[0.3em] text-[oklch(0.75_0.1_80)] font-semibold">
-                  Dream Destinations
+                  Travel Experiences
                 </span>
                 <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-3">
-                  Where will your story unfold?
+                  How will your story unfold?
                 </h2>
                 <p className="text-white/40 mt-4 max-w-2xl mx-auto text-lg">
-                  Explore our most sought-after destinations. Each one curated for unforgettable experiences.
+                  From ocean cruises to scenic rail journeys — explore the travel experiences we love to plan.
                 </p>
               </div>
             </ScrollReveal>
@@ -294,17 +332,17 @@ export default function Home() {
                     <div className="group relative w-full h-full rounded-2xl overflow-hidden cursor-pointer">
                       <img
                         src={dest.img}
-                        alt={`${dest.name}, ${dest.country}`}
+                        alt={`${dest.name} — ${dest.country}`}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_260)] via-[oklch(0.08_0.03_260/0.2)] to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <h3 className="font-serif text-xl md:text-2xl text-white font-semibold">{dest.name}</h3>
-                        <p className="text-white/50 text-sm">{dest.country}</p>
-                      </div>
-                      <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                          <ChevronRight className="w-5 h-5 text-white" />
+                      <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+                        <div>
+                          <h3 className="font-serif text-xl md:text-2xl text-white font-semibold">{dest.name}</h3>
+                          <p className="text-white/50 text-sm">{dest.country}</p>
+                        </div>
+                        <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center shrink-0 ml-3">
+                          <dest.icon className="w-5 h-5 text-white/80" />
                         </div>
                       </div>
                     </div>
@@ -332,14 +370,14 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 {
-                  quote: "Kat made our honeymoon absolutely magical. Every detail was perfect — from the flights to the surprise sunset dinner in Santorini. We didn't have to worry about a thing.",
+                  quote: "Kat planned our first-ever cruise and it was incredible. She found us an amazing deal, handled all the details, and even arranged shore excursions. We're already planning our next one!",
                   name: "Sarah & James",
-                  trip: "Santorini, Greece",
+                  trip: "Caribbean Cruise",
                 },
                 {
-                  quote: "As a solo traveler, I was nervous about planning a big international trip. Kat's personalized itinerary gave me confidence and the trip of a lifetime in Bali.",
+                  quote: "I always wanted to do a European train trip but had no idea where to start. Kat mapped out the perfect route through Italy and Switzerland. It was the trip of a lifetime!",
                   name: "Michelle T.",
-                  trip: "Bali, Indonesia",
+                  trip: "European Rail Journey",
                 },
                 {
                   quote: "We've used Kat for three family vacations now. She handles everything — insurance, hotels, activities for the kids. We just show up and enjoy. Truly the best.",
@@ -459,13 +497,13 @@ export default function Home() {
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Dream Destination</label>
+                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Dream Experience</label>
                       <input
                         type="text"
                         value={formData.destination}
                         onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
                         className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-[oklch(0.98_0.003_260)] text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all"
-                        placeholder="e.g. Santorini, Bali..."
+                        placeholder="e.g. Caribbean cruise, Europe by train..."
                       />
                     </div>
                     <div className="sm:col-span-2">

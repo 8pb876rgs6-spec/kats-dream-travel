@@ -24,7 +24,7 @@ export default function Navbar() {
 
   const navLinks = [
     { label: "Services", href: "/#services" },
-    { label: "Destinations", href: "/#destinations" },
+    { label: "Experiences", href: "/#destinations" },
     { label: "About Kat", href: "/about" },
   ];
 

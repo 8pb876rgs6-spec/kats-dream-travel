@@ -1,6 +1,7 @@
 /**
  * CinematicIntro — Airplane window zoom animation that reveals the homepage
  * Design: Cinematic Voyager — dark cabin, window view, smooth zoom transition
+ * Only plays ONCE per session — subsequent visits skip straight to the homepage
  */
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,14 +9,30 @@ import { Plane } from "lucide-react";
 
 const AIRPLANE_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477345712/dHh7MfoMqSwueh7MPSfyUG/hero-airplane-window-QCCfvZERJVu8HGxRZEEBqo.webp";
 
+const INTRO_SEEN_KEY = "kdt-intro-seen";
+
 interface CinematicIntroProps {
   onComplete: () => void;
 }
 
 export default function CinematicIntro({ onComplete }: CinematicIntroProps) {
-  const [phase, setPhase] = useState<"loading" | "window" | "zoom" | "done">("loading");
+  // Check if intro was already shown this session
+  const alreadySeen = typeof window !== "undefined" && sessionStorage.getItem(INTRO_SEEN_KEY) === "true";
 
+  const [phase, setPhase] = useState<"loading" | "window" | "zoom" | "done">(
+    alreadySeen ? "done" : "loading"
+  );
+
+  // If already seen, immediately complete
   useEffect(() => {
+    if (alreadySeen) {
+      onComplete();
+    }
+  }, [alreadySeen, onComplete]);
+
+  // Image preload
+  useEffect(() => {
+    if (alreadySeen) return;
     const img = new Image();
     img.src = AIRPLANE_IMG;
     img.onload = () => {
@@ -31,7 +48,9 @@ export default function CinematicIntro({ onComplete }: CinematicIntroProps) {
     return () => clearTimeout(fallback);
   }, []);
 
+  // Phase progression
   useEffect(() => {
+    if (alreadySeen) return;
     if (phase === "window") {
       const t = setTimeout(() => setPhase("zoom"), 2200);
       return () => clearTimeout(t);
@@ -39,11 +58,21 @@ export default function CinematicIntro({ onComplete }: CinematicIntroProps) {
     if (phase === "zoom") {
       const t = setTimeout(() => {
         setPhase("done");
+        sessionStorage.setItem(INTRO_SEEN_KEY, "true");
         onComplete();
       }, 1400);
       return () => clearTimeout(t);
     }
-  }, [phase, onComplete]);
+  }, [phase, onComplete, alreadySeen]);
+
+  const handleSkip = () => {
+    setPhase("done");
+    sessionStorage.setItem(INTRO_SEEN_KEY, "true");
+    onComplete();
+  };
+
+  // If already seen, render nothing
+  if (alreadySeen) return null;
 
   return (
     <AnimatePresence>
@@ -133,10 +162,7 @@ export default function CinematicIntro({ onComplete }: CinematicIntroProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2, duration: 0.5 }}
-                onClick={() => {
-                  setPhase("done");
-                  onComplete();
-                }}
+                onClick={handleSkip}
               >
                 Skip Intro
               </motion.button>

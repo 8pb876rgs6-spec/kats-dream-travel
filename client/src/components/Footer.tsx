@@ -3,7 +3,7 @@
  * Design: Cinematic Voyager — deep navy, elegant serif, gold accents
  */
 import { Link } from "wouter";
-import { Plane, Mail, Phone, MapPin } from "lucide-react";
+import { Plane, Mail, Phone, Ship, Train, MapPin, Palmtree, Anchor } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -36,7 +36,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 { label: "Services", href: "/#services" },
-                { label: "Destinations", href: "/#destinations" },
+                { label: "Travel Experiences", href: "/#destinations" },
                 { label: "About Kat", href: "/about" },
                 { label: "Book a Trip", href: "/#booking" },
               ].map((link) => (
@@ -52,16 +52,22 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Destinations */}
+          {/* Travel Experiences */}
           <div>
-            <h4 className="font-serif text-lg font-semibold text-white mb-5">Top Destinations</h4>
+            <h4 className="font-serif text-lg font-semibold text-white mb-5">Popular Experiences</h4>
             <ul className="space-y-3">
-              {["Santorini, Greece", "Paris, France", "Bali, Indonesia", "Maldives", "Cancún, Mexico"].map(
-                (dest) => (
-                  <li key={dest}>
+              {[
+                { label: "Caribbean Cruises", icon: Ship },
+                { label: "Alaska Glacier Cruises", icon: Anchor },
+                { label: "European Rail Journeys", icon: Train },
+                { label: "Coastal Road Trips", icon: MapPin },
+                { label: "Family Beach Getaways", icon: Palmtree },
+              ].map(
+                (item) => (
+                  <li key={item.label}>
                     <span className="text-sm text-white/50 flex items-center gap-2">
-                      <MapPin className="w-3 h-3 text-[oklch(0.62_0.19_260)]" />
-                      {dest}
+                      <item.icon className="w-3 h-3 text-[oklch(0.62_0.19_260)]" />
+                      {item.label}
                     </span>
                   </li>
                 )
