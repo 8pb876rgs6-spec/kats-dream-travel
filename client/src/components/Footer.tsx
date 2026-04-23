@@ -1,0 +1,100 @@
+/**
+ * Footer — Consistent across all pages
+ * Design: Cinematic Voyager — deep navy, elegant serif, gold accents
+ */
+import { Link } from "wouter";
+import { Plane, Mail, Phone, MapPin } from "lucide-react";
+
+export default function Footer() {
+  return (
+    <footer className="bg-[oklch(0.10_0.04_260)] text-white/80">
+      <div className="container py-16 md:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          {/* Brand */}
+          <div className="lg:col-span-1">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[oklch(0.62_0.19_260)] to-[oklch(0.75_0.1_80)] flex items-center justify-center">
+                <Plane className="w-5 h-5 text-white -rotate-45" />
+              </div>
+              <div className="flex flex-col leading-tight">
+                <span className="font-serif text-lg font-semibold text-white">
+                  Kat's Dream Destination
+                </span>
+                <span className="text-[10px] uppercase tracking-[0.25em] text-[oklch(0.75_0.1_80)] font-medium">
+                  Travel Agency
+                </span>
+              </div>
+            </div>
+            <p className="text-sm text-white/50 leading-relaxed max-w-xs">
+              Personalized travel planning with a human touch. Your dream trip is just a conversation away.
+            </p>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="font-serif text-lg font-semibold text-white mb-5">Explore</h4>
+            <ul className="space-y-3">
+              {[
+                { label: "Services", href: "/#services" },
+                { label: "Destinations", href: "/#destinations" },
+                { label: "About Kat", href: "/about" },
+                { label: "Book a Trip", href: "/#booking" },
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-white/50 hover:text-[oklch(0.75_0.1_80)] transition-colors duration-300"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Destinations */}
+          <div>
+            <h4 className="font-serif text-lg font-semibold text-white mb-5">Top Destinations</h4>
+            <ul className="space-y-3">
+              {["Santorini, Greece", "Paris, France", "Bali, Indonesia", "Maldives", "Cancún, Mexico"].map(
+                (dest) => (
+                  <li key={dest}>
+                    <span className="text-sm text-white/50 flex items-center gap-2">
+                      <MapPin className="w-3 h-3 text-[oklch(0.62_0.19_260)]" />
+                      {dest}
+                    </span>
+                  </li>
+                )
+              )}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="font-serif text-lg font-semibold text-white mb-5">Get in Touch</h4>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-3">
+                <Mail className="w-4 h-4 text-[oklch(0.62_0.19_260)]" />
+                <span className="text-sm text-white/50">hello@katsdreamtravel.com</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone className="w-4 h-4 text-[oklch(0.62_0.19_260)]" />
+                <span className="text-sm text-white/50">(555) 123-4567</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-white/30">
+            &copy; {new Date().getFullYear()} Kat's Dream Destination Travel. All rights reserved.
+          </p>
+          <p className="text-xs text-white/30">
+            Crafted with passion for unforgettable journeys.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
