@@ -8,16 +8,16 @@ import { Menu, X, Plane } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 function scrollToId(id: string) {
-  // Small delay to ensure DOM is ready after route change
-  const attempt = () => {
+  // Multiple retries to ensure DOM is ready after route change
+  const attempt = (retries = 0) => {
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
+    } else if (retries < 5) {
+      setTimeout(() => attempt(retries + 1), 100);
     }
   };
   attempt();
-  // Retry after a short delay in case the page is still rendering
-  setTimeout(attempt, 150);
 }
 
 export default function Navbar() {
@@ -55,7 +55,8 @@ export default function Navbar() {
     } else {
       // Navigate to home first, then scroll after route change
       setLocation("/");
-      setTimeout(() => scrollToId(id), 300);
+      // Wait for ScrollToTop to fire and page to render, then scroll to section
+      setTimeout(() => scrollToId(id), 400);
     }
   };
 

@@ -75,6 +75,7 @@ export default function Footer() {
                   ) : (
                     <Link
                       href={link.href}
+                      onClick={() => window.scrollTo(0, 0)}
                       className="text-sm text-white/50 hover:text-[oklch(0.75_0.1_80)] transition-colors duration-300"
                     >
                       {link.label}
