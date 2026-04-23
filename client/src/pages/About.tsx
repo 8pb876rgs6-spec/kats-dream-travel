@@ -25,7 +25,7 @@ import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const ABOUT_HERO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477345712/dHh7MfoMqSwueh7MPSfyUG/about-hero-UEtJnNobELbZMhQHcez3vg.webp";
-const KAT_PROFILE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477345712/dHh7MfoMqSwueh7MPSfyUG/kat-profile-UCQ9nkFQBpGRbqp6EgoJaN.webp";
+const KAT_PROFILE = "/manus-storage/kat-real-photo_1dd6f682.webp";
 const CTA_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477345712/dHh7MfoMqSwueh7MPSfyUG/cta-background-6ACjoT2usg2KTvPCJVenT6.webp";
 
 const VALUES = [
