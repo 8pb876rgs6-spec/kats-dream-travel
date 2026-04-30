@@ -106,7 +106,7 @@ export default function About() {
                   A passionate traveler who turned her love for exploring the world into a mission: helping others experience unforgettable journeys — stress-free and personalized.
                 </p>
                 <div className="flex flex-wrap gap-2 mt-4">
-                  {["Hilton Partner", "Custom Itineraries", "Insurance Expert"].map((badge) => (
+                  {["Hilton Partner", "Custom Itineraries", "Cruise Expert"].map((badge) => (
                     <span
                       key={badge}
                       className="text-[10px] uppercase tracking-wider px-3 py-1 rounded-full bg-[oklch(0.62_0.19_260/0.15)] text-[oklch(0.62_0.19_260)] font-semibold border border-[oklch(0.62_0.19_260/0.2)]"
