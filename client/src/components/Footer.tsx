@@ -119,7 +119,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-[oklch(0.62_0.19_260)]" />
-                <span className="text-sm text-white/50">(555) 123-4567</span>
+                <a href="tel:+12816364873" className="text-sm text-white/50 hover:text-[oklch(0.75_0.1_80)] transition-colors duration-300">(281) 636-4873</a>
               </li>
             </ul>
           </div>
