@@ -128,21 +128,28 @@ export default function Footer() {
         {/* Cornerstone Travel Affiliate Section */}
         <div className="mt-12 pt-8 border-t border-white/10">
           <div className="flex flex-col items-center text-center">
-            {/* Plane Icon in Circle */}
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[oklch(0.62_0.19_260)] to-[oklch(0.50_0.15_260)] flex items-center justify-center mb-4 shadow-lg">
-              <Plane className="w-8 h-8 text-white -rotate-45" />
+            {/* Black Circle with Plane Icon (Location Pin Shape) */}
+            <div className="w-20 h-20 rounded-full bg-black flex items-center justify-center mb-6 shadow-lg">
+              <Plane className="w-10 h-10 text-white -rotate-45" />
             </div>
 
-            {/* Cornerstone Branding */}
-            <h3 className="font-serif text-2xl font-semibold text-white mb-1" style={{ fontStyle: "italic" }}>
+            {/* Cornerstone in Script Font */}
+            <h3 className="text-4xl font-bold text-white mb-2" style={{ fontFamily: "cursive", fontStyle: "italic", fontWeight: "normal", letterSpacing: "-0.02em" }}>
               Cornerstone
             </h3>
-            <p className="text-xs uppercase tracking-[0.2em] text-[oklch(0.75_0.1_80)] font-medium mb-4">
-              Lets Go Travel Affiliate
-            </p>
+
+            {/* LETS GO TRAVEL AFFILIATE in Clean Sans-Serif */}
+            <div className="mb-4">
+              <p className="text-xs uppercase tracking-widest text-white/90 font-medium">
+                Lets Go Travel
+              </p>
+              <p className="text-xs uppercase tracking-widest text-white/90 font-medium">
+                Affiliate
+              </p>
+            </div>
 
             {/* License Information */}
-            <div className="text-xs text-white/40 space-y-1">
+            <div className="text-xs text-white/50 space-y-1 font-light">
               <p>California SOT #2158353-50</p>
               <p>Florida SOT Ref. #ST44927</p>
             </div>
