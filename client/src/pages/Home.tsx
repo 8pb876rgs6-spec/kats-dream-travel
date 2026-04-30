@@ -89,7 +89,20 @@ const TRUST_ITEMS = [
 export default function Home() {
   const [introComplete, setIntroComplete] = useState(false);
   const [formData, setFormData] = useState({
-    name: "", email: "", phone: "", travelers: "", destination: "", budget: "", message: "",
+    name: "",
+    email: "",
+    phone: "",
+    vacationType: "",
+    cruiseTerminal: "",
+    departureDate: "",
+    nights: "",
+    travelers: "",
+    roomsCabins: "",
+    pastGuests: "",
+    cabinPreference: "",
+    gratuities: false,
+    travelProtection: false,
+    message: "",
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
 
@@ -99,14 +112,24 @@ export default function Home() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const addOns = [
+      formData.gratuities && "Prepaid gratuities",
+      formData.travelProtection && "Travel protection insurance",
+    ].filter(Boolean).join(", ") || "None";
     const subject = encodeURIComponent(`Travel Inquiry from ${formData.name}`);
     const body = encodeURIComponent(
       `Name: ${formData.name}\n` +
       `Email: ${formData.email}\n` +
       `Phone: ${formData.phone}\n` +
-      `Number of Travelers: ${formData.travelers}\n` +
-      `Dream Experience: ${formData.destination}\n` +
-      `Budget Range: ${formData.budget}\n` +
+      `Vacation Type: ${formData.vacationType}\n` +
+      `Preferred Cruise Terminal/Airport: ${formData.cruiseTerminal}\n` +
+      `Earliest Departure Date: ${formData.departureDate}\n` +
+      `Number of Nights: ${formData.nights}\n` +
+      `Adults & Children: ${formData.travelers}\n` +
+      `Rooms/Cabins Needed: ${formData.roomsCabins}\n` +
+      `Past Cruise Guests: ${formData.pastGuests || "N/A"}\n` +
+      `Cabin Preference: ${formData.cabinPreference}\n` +
+      `Add-ons: ${addOns}\n` +
       `Additional Details:\n${formData.message}`
     );
     window.open(`mailto:katsddtravel@gmail.com?subject=${subject}&body=${body}`, "_blank");
@@ -412,82 +435,187 @@ export default function Home() {
                   className="bg-[oklch(0.98_0.003_260)] rounded-3xl p-8 md:p-10 shadow-xl border border-[oklch(0.92_0.01_260)]"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    {/* Name */}
                     <div className="sm:col-span-2">
-                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Full Name</label>
+                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Full Name <span className="text-red-500">*</span></label>
                       <input
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-[oklch(0.98_0.003_260)] text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all"
+                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-white text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all"
                         placeholder="Your name"
                         required
                       />
                     </div>
+                    {/* Email */}
                     <div>
-                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Email</label>
+                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Email <span className="text-red-500">*</span></label>
                       <input
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-[oklch(0.98_0.003_260)] text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all"
+                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-white text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all"
                         placeholder="you@email.com"
                         required
                       />
                     </div>
+                    {/* Phone */}
                     <div>
-                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Phone</label>
+                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Phone <span className="text-red-500">*</span></label>
                       <input
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-[oklch(0.98_0.003_260)] text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all"
+                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-white text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all"
                         placeholder="(555) 000-0000"
+                        required
                       />
                     </div>
-                    <div>
-                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Number of Travelers</label>
-                      <input
-                        type="number"
-                        min="1"
-                        value={formData.travelers}
-                        onChange={(e) => setFormData({ ...formData, travelers: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-[oklch(0.98_0.003_260)] text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all"
-                        placeholder="2"
-                      />
+                    {/* Vacation Type */}
+                    <div className="sm:col-span-2">
+                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">What type of vacation are you looking to take? <span className="text-red-500">*</span></label>
+                      <div className="flex flex-wrap gap-4 mt-2">
+                        {["Cruise", "Destination"].map((option) => (
+                          <label key={option} className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="vacationType"
+                              value={option}
+                              checked={formData.vacationType === option}
+                              onChange={(e) => setFormData({ ...formData, vacationType: e.target.value })}
+                              className="w-4 h-4 text-[oklch(0.62_0.19_260)] border-[oklch(0.80_0.01_260)] focus:ring-[oklch(0.62_0.19_260)]"
+                              required
+                            />
+                            <span className="text-sm text-[oklch(0.25_0.04_260)]">{option}</span>
+                          </label>
+                        ))}
+                      </div>
                     </div>
-                    <div>
-                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Dream Experience</label>
+                    {/* Cruise Terminal / Airport */}
+                    <div className="sm:col-span-2">
+                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">What is your preferred cruise terminal/airport? <span className="text-red-500">*</span></label>
                       <input
                         type="text"
-                        value={formData.destination}
-                        onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-[oklch(0.98_0.003_260)] text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all"
-                        placeholder="e.g. Caribbean cruise, Europe by train..."
+                        value={formData.cruiseTerminal}
+                        onChange={(e) => setFormData({ ...formData, cruiseTerminal: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-white text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all"
+                        placeholder="e.g. Port Canaveral, Miami, LAX..."
+                        required
                       />
                     </div>
-                    <div className="sm:col-span-2">
-                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Budget Range</label>
+                    {/* Departure Date */}
+                    <div>
+                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Earliest departure date</label>
+                      <input
+                        type="date"
+                        value={formData.departureDate}
+                        onChange={(e) => setFormData({ ...formData, departureDate: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-white text-[oklch(0.15_0.04_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all"
+                      />
+                    </div>
+                    {/* Number of Nights */}
+                    <div>
+                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">How many nights? <span className="text-red-500">*</span></label>
                       <select
-                        value={formData.budget}
-                        onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-[oklch(0.98_0.003_260)] text-[oklch(0.15_0.04_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all"
+                        value={formData.nights}
+                        onChange={(e) => setFormData({ ...formData, nights: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-white text-[oklch(0.15_0.04_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all"
+                        required
                       >
-                        <option value="">Select your budget</option>
-                        <option value="under-2k">Under $2,000</option>
-                        <option value="2k-5k">$2,000 – $5,000</option>
-                        <option value="5k-10k">$5,000 – $10,000</option>
-                        <option value="10k-plus">$10,000+</option>
-                        <option value="flexible">Flexible / Not Sure</option>
+                        <option value="">Select</option>
+                        <option value="3-5 nights">3-5 nights</option>
+                        <option value="6-9 nights">6-9 nights</option>
+                        <option value="10+ nights">10+ nights</option>
                       </select>
                     </div>
+                    {/* Adults and Children */}
+                    <div className="sm:col-span-2">
+                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">How many adults and children will be traveling? <span className="text-[oklch(0.50_0.03_260)] text-xs">(Please include age(s) of all minors)</span> <span className="text-red-500">*</span></label>
+                      <input
+                        type="text"
+                        value={formData.travelers}
+                        onChange={(e) => setFormData({ ...formData, travelers: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-white text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all"
+                        placeholder="e.g. 2 adults, 1 child (age 8)"
+                        required
+                      />
+                    </div>
+                    {/* Rooms / Cabins */}
+                    <div className="sm:col-span-2">
+                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">How many rooms/cabins will you need? <span className="text-[oklch(0.50_0.03_260)] text-xs">(If multiple, please break down travelers per cabin/room)</span> <span className="text-red-500">*</span></label>
+                      <textarea
+                        rows={2}
+                        value={formData.roomsCabins}
+                        onChange={(e) => setFormData({ ...formData, roomsCabins: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-white text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all resize-none"
+                        placeholder="e.g. 1 cabin — 2 adults; or 2 cabins — Cabin 1: 2 adults, Cabin 2: 2 adults + 1 child"
+                        required
+                      />
+                    </div>
+                    {/* Past Cruise Guests */}
+                    <div className="sm:col-span-2">
+                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Are you traveling with passengers who have cruised before? <span className="text-[oklch(0.50_0.03_260)] text-xs">(If so, enter their name(s) and birthdate(s) for past guest offers)</span></label>
+                      <textarea
+                        rows={2}
+                        value={formData.pastGuests}
+                        onChange={(e) => setFormData({ ...formData, pastGuests: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-white text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all resize-none"
+                        placeholder="e.g. John Smith, 03/15/1980"
+                      />
+                    </div>
+                    {/* Cabin Preference */}
+                    <div className="sm:col-span-2">
+                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Cabin preference <span className="text-[oklch(0.50_0.03_260)] text-xs">(Note: I do not typically quote upper/lower or guarantee/waitlisted cabins unless specifically asked)</span> <span className="text-red-500">*</span></label>
+                      <div className="flex flex-wrap gap-4 mt-2">
+                        {["Interior", "Oceanview", "Balcony", "Suite"].map((option) => (
+                          <label key={option} className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="cabinPreference"
+                              value={option}
+                              checked={formData.cabinPreference === option}
+                              onChange={(e) => setFormData({ ...formData, cabinPreference: e.target.value })}
+                              className="w-4 h-4 text-[oklch(0.62_0.19_260)] border-[oklch(0.80_0.01_260)] focus:ring-[oklch(0.62_0.19_260)]"
+                              required
+                            />
+                            <span className="text-sm text-[oklch(0.25_0.04_260)]">{option}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    {/* Add-ons: Gratuities & Travel Protection */}
+                    <div className="sm:col-span-2">
+                      <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-2 block">Would you like me to include any of the following in your quote?</label>
+                      <div className="flex flex-col gap-3 mt-1">
+                        <label className="flex items-center gap-3 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={formData.gratuities}
+                            onChange={(e) => setFormData({ ...formData, gratuities: e.target.checked })}
+                            className="w-4 h-4 rounded border-[oklch(0.80_0.01_260)] text-[oklch(0.62_0.19_260)] focus:ring-[oklch(0.62_0.19_260)]"
+                          />
+                          <span className="text-sm text-[oklch(0.25_0.04_260)]">Prepaid gratuities</span>
+                        </label>
+                        <label className="flex items-center gap-3 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={formData.travelProtection}
+                            onChange={(e) => setFormData({ ...formData, travelProtection: e.target.checked })}
+                            className="w-4 h-4 rounded border-[oklch(0.80_0.01_260)] text-[oklch(0.62_0.19_260)] focus:ring-[oklch(0.62_0.19_260)]"
+                          />
+                          <span className="text-sm text-[oklch(0.25_0.04_260)]">Travel protection insurance</span>
+                        </label>
+                      </div>
+                    </div>
+                    {/* Additional Details */}
                     <div className="sm:col-span-2">
                       <label className="text-sm font-medium text-[oklch(0.30_0.04_260)] mb-1.5 block">Additional Details</label>
                       <textarea
                         rows={3}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-[oklch(0.98_0.003_260)] text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all resize-none"
-                        placeholder="Tell us about your dream trip..."
+                        className="w-full px-4 py-3 rounded-xl border border-[oklch(0.90_0.01_260)] bg-white text-[oklch(0.15_0.04_260)] placeholder:text-[oklch(0.60_0.02_260)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.62_0.19_260/0.3)] focus:border-[oklch(0.62_0.19_260)] transition-all resize-none"
+                        placeholder="Any special requests, celebrations, accessibility needs..."
                       />
                     </div>
                   </div>
