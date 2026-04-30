@@ -4,6 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import { notifyOwner } from "./_core/notification";
+import { sendInquirySMS } from "./_core/sms";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -93,10 +94,19 @@ Personalized travel planning for cruises, trains, and unforgettable experiences
           content: textContent,
         });
 
+        // Send SMS alert to Kat's phone via Verizon email-to-SMS gateway
+        const smsSent = await sendInquirySMS({
+          name: input.name,
+          email: input.email,
+          vacationType: input.vacationType,
+          cruiseTerminal: input.cruiseTerminal,
+        });
+
         return {
           success: true,
           message: "Inquiry submitted successfully",
           notificationSent,
+          smsSent,
         };
       }),
   }),
