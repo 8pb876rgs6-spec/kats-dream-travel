@@ -110,31 +110,47 @@ export default function Home() {
     setIntroComplete(true);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const addOns = [
-      formData.gratuities && "Prepaid gratuities",
-      formData.travelProtection && "Travel protection insurance",
-    ].filter(Boolean).join(", ") || "None";
-    const subject = encodeURIComponent(`Travel Inquiry from ${formData.name}`);
-    const body = encodeURIComponent(
-      `Name: ${formData.name}\n` +
-      `Email: ${formData.email}\n` +
-      `Phone: ${formData.phone}\n` +
-      `Vacation Type: ${formData.vacationType}\n` +
-      `Preferred Cruise Terminal/Airport: ${formData.cruiseTerminal}\n` +
-      `Earliest Departure Date: ${formData.departureDate}\n` +
-      `Number of Nights: ${formData.nights}\n` +
-      `Adults & Children: ${formData.travelers}\n` +
-      `Rooms/Cabins Needed: ${formData.roomsCabins}\n` +
-      `Past Cruise Guests: ${formData.pastGuests || "N/A"}\n` +
-      `Cabin Preference: ${formData.cabinPreference}\n` +
-      `Add-ons: ${addOns}\n` +
-      `Additional Details:\n${formData.message}`
-    );
-    window.open(`mailto:katsddtravel@gmail.com?subject=${subject}&body=${body}`, "_blank");
     setFormSubmitted(true);
-    setTimeout(() => setFormSubmitted(false), 4000);
+    try {
+      const response = await fetch("/api/trpc/travel.submitInquiry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          json: formData,
+        }),
+      });
+
+      if (response.ok) {
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          vacationType: "",
+          cruiseTerminal: "",
+          departureDate: "",
+          nights: "",
+          travelers: "",
+          roomsCabins: "",
+          pastGuests: "",
+          cabinPreference: "",
+          gratuities: false,
+          travelProtection: false,
+          message: "",
+        });
+        setTimeout(() => setFormSubmitted(false), 4000);
+      } else {
+        console.error("Failed to submit inquiry");
+        setFormSubmitted(false);
+      }
+    } catch (error) {
+      console.error("Error submitting inquiry:", error);
+      setFormSubmitted(false);
+    }
   };
 
   return (
