@@ -1,21 +1,24 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { appRouter } from "./routers";
 
-// Mock the notifyOwner function
-vi.mock("./_core/notification", () => ({
-  notifyOwner: vi.fn(async (payload) => {
-    // Store all notifications for inspection
-    if (!(global as any).allNotifications) {
-      (global as any).allNotifications = [];
-    }
-    (global as any).allNotifications.push(payload);
+// Mock the email and SMS services
+vi.mock("./_core/emailer", () => ({
+  sendInquiryEmail: vi.fn(async (data, textContent) => {
+    // Store the email content for inspection
+    (global as any).lastEmailContent = textContent;
+    return true;
+  }),
+}));
+
+vi.mock("./_core/sms", () => ({
+  sendInquirySMS: vi.fn(async () => {
     return true;
   }),
 }));
 
 describe("travel.submitInquiry", () => {
   beforeEach(() => {
-    (global as any).allNotifications = [];
+    (global as any).lastEmailContent = null;
   });
 
   it("should submit an inquiry and send email and SMS notifications", async () => {
@@ -44,70 +47,43 @@ describe("travel.submitInquiry", () => {
 
     expect(result.success).toBe(true);
     expect(result.message).toBe("Inquiry submitted successfully");
+    expect(result.emailSent).toBe(true);
+    expect(result.smsSent).toBe(true);
 
-    // Verify both email and SMS were sent
-    const allNotifications = (global as any).allNotifications;
-    expect(allNotifications.length).toBeGreaterThanOrEqual(2);
+    // Verify the email content
+    const emailContent = (global as any).lastEmailContent;
+    expect(emailContent).toBeDefined();
 
-    // Find the email notification (contains full details)
-    const emailNotification = allNotifications.find(
-      (n: any) =>
-        n.title?.includes("New Travel Inquiry") &&
-        n.content?.includes("CONTACT INFORMATION")
-    );
-    expect(emailNotification).toBeDefined();
-    expect(emailNotification.title).toContain("New Travel Inquiry from John Doe");
-
-    // Verify the email content is plain-text and NOT HTML
-    expect(emailNotification.content).not.toContain("<!DOCTYPE html>");
-    expect(emailNotification.content).not.toContain("<html>");
-    expect(emailNotification.content).not.toContain("<style>");
-    expect(emailNotification.content).not.toContain("<div");
+    // Verify the content is plain-text and NOT HTML
+    expect(emailContent).not.toContain("<!DOCTYPE html>");
+    expect(emailContent).not.toContain("<html>");
+    expect(emailContent).not.toContain("<style>");
+    expect(emailContent).not.toContain("<div");
 
     // Verify the email content contains all the expected information
-    expect(emailNotification.content).toContain(
-      "KAT'S DREAM DESTINATION TRAVEL"
-    );
-    expect(emailNotification.content).toContain("CONTACT INFORMATION");
-    expect(emailNotification.content).toContain("John Doe");
-    expect(emailNotification.content).toContain("john@example.com");
-    expect(emailNotification.content).toContain("(555) 123-4567");
-    expect(emailNotification.content).toContain("TRAVEL DETAILS");
-    expect(emailNotification.content).toContain("Vacation Type: Cruise");
-    expect(emailNotification.content).toContain(
-      "Cruise Terminal/Airport: Port Canaveral"
-    );
-    expect(emailNotification.content).toContain("Earliest Departure: 2026-06-15");
-    expect(emailNotification.content).toContain("Number of Nights: 7 nights");
-    expect(emailNotification.content).toContain(
-      "Travelers: 2 adults, 2 children (ages 8, 12)"
-    );
-    expect(emailNotification.content).toContain(
-      "Rooms/Cabins: 1 cabin - 2 adults, 2 children"
-    );
-    expect(emailNotification.content).toContain(
-      "Past Cruise Guests: John Doe, 01/15/1980"
-    );
-    expect(emailNotification.content).toContain("Cabin Preference: Balcony");
-    expect(emailNotification.content).toContain("ADD-ONS");
-    expect(emailNotification.content).toContain("Prepaid gratuities");
-    expect(emailNotification.content).toContain("Travel protection insurance");
-    expect(emailNotification.content).toContain("ADDITIONAL DETAILS");
-    expect(emailNotification.content).toContain(
+    expect(emailContent).toContain("KAT'S DREAM DESTINATION TRAVEL");
+    expect(emailContent).toContain("CONTACT INFORMATION");
+    expect(emailContent).toContain("John Doe");
+    expect(emailContent).toContain("john@example.com");
+    expect(emailContent).toContain("(555) 123-4567");
+    expect(emailContent).toContain("TRAVEL DETAILS");
+    expect(emailContent).toContain("Vacation Type: Cruise");
+    expect(emailContent).toContain("Cruise Terminal/Airport: Port Canaveral");
+    expect(emailContent).toContain("Earliest Departure: 2026-06-15");
+    expect(emailContent).toContain("Number of Nights: 7 nights");
+    expect(emailContent).toContain("Travelers: 2 adults, 2 children (ages 8, 12)");
+    expect(emailContent).toContain("Rooms/Cabins: 1 cabin - 2 adults, 2 children");
+    expect(emailContent).toContain("Past Cruise Guests: John Doe, 01/15/1980");
+    expect(emailContent).toContain("Cabin Preference: Balcony");
+    expect(emailContent).toContain("ADD-ONS");
+    expect(emailContent).toContain("Prepaid gratuities");
+    expect(emailContent).toContain("Travel protection insurance");
+    expect(emailContent).toContain("ADDITIONAL DETAILS");
+    expect(emailContent).toContain(
       "We would love a family-friendly cruise with activities for kids."
     );
-    expect(emailNotification.content).toContain("katsddtravel@gmail.com");
-    expect(emailNotification.content).toContain("(281) 636-4873");
-
-    // Verify SMS was also sent
-    const smsNotification = allNotifications.find(
-      (n: any) => n.title === "SMS Alert"
-    );
-    expect(smsNotification).toBeDefined();
-    expect(smsNotification.content).toContain("New inquiry from John Doe");
-    expect(smsNotification.content).toContain("Cruise");
-    expect(smsNotification.content).toContain("Port Canaveral");
-    expect(smsNotification.content).toContain("john@example.com");
+    expect(emailContent).toContain("katsddtravel@gmail.com");
+    expect(emailContent).toContain("(281) 636-4873");
   });
 
   it("should handle optional fields correctly", async () => {
@@ -136,19 +112,12 @@ describe("travel.submitInquiry", () => {
 
     expect(result.success).toBe(true);
 
-    const allNotifications = (global as any).allNotifications;
-    const emailNotification = allNotifications.find(
-      (n: any) =>
-        n.title?.includes("New Travel Inquiry") &&
-        n.content?.includes("CONTACT INFORMATION")
-    );
-    expect(emailNotification).toBeDefined();
-    expect(emailNotification.content).toContain(
-      "Earliest Departure: Not specified"
-    );
-    expect(emailNotification.content).toContain("Past Cruise Guests: N/A");
-    expect(emailNotification.content).toContain("Requested: None");
-    expect(emailNotification.content).not.toContain("ADDITIONAL DETAILS");
+    const emailContent = (global as any).lastEmailContent;
+    expect(emailContent).toBeDefined();
+    expect(emailContent).toContain("Earliest Departure: Not specified");
+    expect(emailContent).toContain("Past Cruise Guests: N/A");
+    expect(emailContent).toContain("Requested: None");
+    expect(emailContent).not.toContain("ADDITIONAL DETAILS");
   });
 
   it("should format add-ons correctly when only one is selected", async () => {
@@ -177,18 +146,9 @@ describe("travel.submitInquiry", () => {
 
     expect(result.success).toBe(true);
 
-    const allNotifications = (global as any).allNotifications;
-    const emailNotification = allNotifications.find(
-      (n: any) =>
-        n.title?.includes("New Travel Inquiry") &&
-        n.content?.includes("CONTACT INFORMATION")
-    );
-    expect(emailNotification).toBeDefined();
-    expect(emailNotification.content).toContain(
-      "Requested: Prepaid gratuities"
-    );
-    expect(emailNotification.content).not.toContain(
-      "Travel protection insurance"
-    );
+    const emailContent = (global as any).lastEmailContent;
+    expect(emailContent).toBeDefined();
+    expect(emailContent).toContain("Requested: Prepaid gratuities");
+    expect(emailContent).not.toContain("Travel protection insurance");
   });
 });

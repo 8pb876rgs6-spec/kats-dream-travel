@@ -3,7 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import { notifyOwner } from "./_core/notification";
+import { sendInquiryEmail } from "./_core/emailer";
 import { sendInquirySMS } from "./_core/sms";
 
 export const appRouter = router({
@@ -88,11 +88,26 @@ Phone: (281) 636-4873
 Personalized travel planning for cruises, trains, and unforgettable experiences
         `.trim();
 
-        // Send notification to owner with plain-text content
-        const notificationSent = await notifyOwner({
-          title: `New Travel Inquiry from ${input.name}`,
-          content: textContent,
-        });
+        // Send email to Kat with plain-text content
+        const emailSent = await sendInquiryEmail(
+          {
+            name: input.name,
+            email: input.email,
+            phone: input.phone,
+            vacationType: input.vacationType,
+            cruiseTerminal: input.cruiseTerminal,
+            departureDate: input.departureDate,
+            nights: input.nights,
+            travelers: input.travelers,
+            roomsCabins: input.roomsCabins,
+            pastGuests: input.pastGuests,
+            cabinPreference: input.cabinPreference,
+            gratuities: input.gratuities,
+            travelProtection: input.travelProtection,
+            message: input.message,
+          },
+          textContent
+        );
 
         // Send SMS alert to Kat's phone via Verizon email-to-SMS gateway
         const smsSent = await sendInquirySMS({
@@ -105,7 +120,7 @@ Personalized travel planning for cruises, trains, and unforgettable experiences
         return {
           success: true,
           message: "Inquiry submitted successfully",
-          notificationSent,
+          emailSent,
           smsSent,
         };
       }),
